@@ -15,6 +15,7 @@ import com.example.habitquest.ui.theme.HabitQuestTheme
 import androidx.room.Room
 import com.example.habitquest.database.HabitDatabase
 import com.example.habitquest.ui.HomeScreen
+import com.example.habitquest.ui.AppNavigation
 
 
 
@@ -31,7 +32,9 @@ class MainActivity : ComponentActivity() {
         val habitDao = db.habitDao()
         setContent {
             HabitQuestTheme {
-                HomeScreen(habitDao)
+                AppNavigation(
+                    habitDao = habitDao
+                )
             }
                 }
             }

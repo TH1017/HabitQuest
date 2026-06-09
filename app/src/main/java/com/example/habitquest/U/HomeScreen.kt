@@ -13,10 +13,13 @@ import com.example.habitquest.database.HabitDao
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.navigation.NavController
+import androidx.compose.foundation.clickable
 
 @Composable
 fun HomeScreen(
-    habitDao: HabitDao
+    habitDao: HabitDao,
+    navController: NavController
 ) {
 
     var habitName by remember {
@@ -90,8 +93,20 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn {
+
             items(habits) { habit ->
-                Text(habit)
+
+                Text(
+                    text = habit,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            navController.navigate(
+                                "detail/$habit"
+                            )
+                        }
+                )
             }
         }
     }
