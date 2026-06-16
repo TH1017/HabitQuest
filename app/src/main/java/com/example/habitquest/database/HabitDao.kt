@@ -20,4 +20,15 @@ interface HabitDao {
 
     @Query("SELECT * FROM HabitRecord WHERE habitId = :habitId")
     suspend fun getRecordsByHabit(habitId: Int): List<HabitRecord>
+
+    @Query("""
+    SELECT * FROM HabitRecord
+    WHERE habitId = :habitId
+    AND date = :date
+    LIMIT 1
+""")
+    suspend fun getRecordByDate(
+        habitId: Int,
+        date: String
+    ): HabitRecord?
 }

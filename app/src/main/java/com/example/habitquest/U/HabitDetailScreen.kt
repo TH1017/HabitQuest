@@ -65,14 +65,29 @@ fun HabitDetailScreen(
 
                 scope.launch {
 
-                    habitDao.insertRecord(
-                        HabitRecord(
+                    val existingRecord = withContext(Dispatchers.IO) {
+                        habitDao.getRecordByDate(
                             habitId = habitId,
                             date = today
                         )
-                    )
-                    records = withContext(Dispatchers.IO) {
-                        habitDao.getRecordsByHabit(habitId)
+                    }
+
+                    if (existingRecord == null) {
+
+                        withContext(Dispatchers.IO) {
+                            habitDao.insertRecord(
+                                HabitRecord(
+                                    habitId = habitId,
+                                    date = today
+                                )
+                            )
+                        }
+
+                        records = withContext(Dispatchers.IO) {
+                            habitDao.getRecordsByHabit(habitId)
+                        }
+
+                        completedToday = true
                     }
                 }
 
