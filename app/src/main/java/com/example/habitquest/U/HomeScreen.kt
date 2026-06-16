@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.navigation.NavController
 import androidx.compose.foundation.clickable
+import com.example.habitquest.data.Habit
 
 @Composable
 fun HomeScreen(
@@ -27,7 +28,7 @@ fun HomeScreen(
     }
 
     val habits = remember {
-        mutableStateListOf<String>()
+        mutableStateListOf<Habit>()
     }
 
     val scope = rememberCoroutineScope()
@@ -40,9 +41,8 @@ fun HomeScreen(
 
         habits.clear()
 
-        habits.addAll(
-            savedHabits.map { it.name }
-        )
+        habits.addAll(savedHabits)
+
     }
 
     Column(
@@ -71,16 +71,14 @@ fun HomeScreen(
             onClick = {
                 if (habitName.isNotBlank()) {
 
-                    val newHabit = habitName
+                    val newHabit = Habit(
+                        name = habitName
+                    )
 
                     habits.add(newHabit)
 
                     scope.launch {
-                        habitDao.insertHabit(
-                            com.example.habitquest.data.Habit(
-                                name = newHabit
-                            )
-                        )
+                        habitDao.insertHabit(newHabit)
                     }
 
                     habitName = ""
@@ -97,13 +95,13 @@ fun HomeScreen(
             items(habits) { habit ->
 
                 Text(
-                    text = habit,
+                    text = habit.name,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
                         .clickable {
                             navController.navigate(
-                                "detail/$habit"
+                                "detail/${habit.id}"
                             )
                         }
                 )

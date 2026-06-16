@@ -24,13 +24,16 @@ fun AppNavigation(habitDao: HabitDao) {
             )
         }
 
-        composable("detail/{habitName}") { backStackEntry ->
+        composable("detail/{habitId}") { backStackEntry ->
 
-            val habitName =
-                backStackEntry.arguments?.getString("habitName") ?: ""
+            val habitId =
+                backStackEntry.arguments
+                    ?.getString("habitId")
+                    ?.toIntOrNull() ?: 0
 
             HabitDetailScreen(
-                habitName = habitName
+                habitId = habitId,
+                habitDao = habitDao
             )
         }
     }

@@ -7,7 +7,7 @@ import com.example.habitquest.data.HabitRecord
 
 @Database(
     entities = [Habit::class, HabitRecord::class],
-    version = 1
+    version = 2
 )
 abstract class HabitDatabase : RoomDatabase() {
 

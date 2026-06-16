@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             HabitDatabase::class.java,
             "habit_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         val habitDao = db.habitDao()
         setContent {
