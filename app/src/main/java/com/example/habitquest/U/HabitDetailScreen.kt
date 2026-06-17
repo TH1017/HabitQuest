@@ -28,13 +28,18 @@ fun HabitDetailScreen(
         mutableStateOf<List<HabitRecord>>(emptyList())
     }
 
+    var streakCount by remember {
+        mutableStateOf(0)
+    }
+
     val scope = rememberCoroutineScope()
 
-    //LaunchedEffect(Unit) {
-    //    records = withContext(Dispatchers.IO) {
-    //        habitDao.getRecordsByHabit(habitId)
-    //    }
-    //}
+    LaunchedEffect(Unit) {
+        records = withContext(Dispatchers.IO) {
+            habitDao.getRecordsByHabit(habitId)
+        }
+        streakCount = calculateStreak(records)
+    }
 
     Column(
         modifier = Modifier
@@ -51,7 +56,7 @@ fun HabitDetailScreen(
         )
 
         Text(
-            text = "🔥 継続日数 0日"
+            text = "🔥 継続日数 ${streakCount}日"
         )
 
         Spacer(
@@ -86,12 +91,12 @@ fun HabitDetailScreen(
                         records = withContext(Dispatchers.IO) {
                             habitDao.getRecordsByHabit(habitId)
                         }
+                        streakCount = calculateStreak(records)
 
                         completedToday = true
                     }
                 }
 
-                completedToday = true
             }
         ) {
             Text("今日達成")
@@ -119,4 +124,24 @@ fun HabitDetailScreen(
             Text(record.date)
         }
     }
+}
+
+
+fun calculateStreak(records: List<HabitRecord>): Int {
+
+    if (records.isEmpty()) return 0
+
+    val dates = records
+        .map { LocalDate.parse(it.date) }
+        .toSet()
+
+    var streak = 0
+    var currentDate = LocalDate.now()
+
+    while (dates.contains(currentDate)) {
+        streak++
+        currentDate = currentDate.minusDays(1)
+    }
+
+    return streak
 }
