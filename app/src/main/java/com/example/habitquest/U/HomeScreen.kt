@@ -94,17 +94,44 @@ fun HomeScreen(
 
             items(habits) { habit ->
 
-                Text(
-                    text = habit.name,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable {
-                            navController.navigate(
-                                "detail/${habit.id}"
-                            )
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Text(
+                        text = habit.name,
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate(
+                                    "detail/${habit.id}"
+                                )
+                            }
+                    )
+
+                    Button(
+                        onClick = {
+
+                            scope.launch {
+
+                                withContext(Dispatchers.IO) {
+
+                                    habitDao.deleteRecordsByHabit(
+                                        habit.id
+                                    )
+
+                                    habitDao.deleteHabit(habit)
+                                }
+
+                                habits.remove(habit)
+                            }
                         }
-                )
+                    ) {
+                        Text("削除")
+                    }
+                }
             }
         }
     }

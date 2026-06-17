@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.habitquest.data.Habit
 import com.example.habitquest.data.HabitRecord
+import androidx.room.Delete
 
 @Dao
 interface HabitDao {
@@ -31,4 +32,10 @@ interface HabitDao {
         habitId: Int,
         date: String
     ): HabitRecord?
+
+    @Delete
+    suspend fun deleteHabit(habit: Habit)
+
+    @Query("DELETE FROM HabitRecord WHERE habitId = :habitId")
+    suspend fun deleteRecordsByHabit(habitId: Int)
 }
