@@ -33,7 +33,8 @@ fun AppNavigation(habitDao: HabitDao) {
 
             HabitDetailScreen(
                 habitId = habitId,
-                habitDao = habitDao
+                habitDao = habitDao,
+                navController = navController
             )
         }
     }

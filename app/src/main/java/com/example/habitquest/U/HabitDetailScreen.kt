@@ -13,11 +13,16 @@ import java.time.LocalDate
 import com.example.habitquest.data.HabitRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.navigation.NavController
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.systemBars
 
 @Composable
 fun HabitDetailScreen(
     habitId: Int,
-    habitDao: HabitDao
+    habitDao: HabitDao,
+    navController: NavController
 ) {
 
     var completedToday by remember {
@@ -41,15 +46,25 @@ fun HabitDetailScreen(
         streakCount = calculateStreak(records)
     }
 
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(WindowInsets.systemBars.asPaddingValues())
             .padding(16.dp)
     ) {
+        Button(
+            onClick = {
+                navController.popBackStack()
+            }
+        ) {
+            Text("← 戻る")
+        }
 
-        Text(
-            text = "Habit ID: $habitId"
-        )
+        //Text(
+            //text = "Habit ID: $habitId"
+        //)
 
         Spacer(
             modifier = Modifier.height(16.dp)
