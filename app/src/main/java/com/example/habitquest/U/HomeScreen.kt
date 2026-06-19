@@ -16,6 +16,10 @@ import kotlinx.coroutines.withContext
 import androidx.navigation.NavController
 import androidx.compose.foundation.clickable
 import com.example.habitquest.data.Habit
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import com.example.habitquest.R
 
 @Composable
 fun HomeScreen(
@@ -62,7 +66,16 @@ fun HomeScreen(
             .padding(16.dp)
     ) {
         Text(" ")
-        Text("HabitQuest")
+        Image(
+            painter = painterResource(
+                id = R.drawable.habitquest_logo
+            ),
+            contentDescription = "HabitQuest Logo",
+                    modifier = Modifier
+                    .fillMaxWidth()
+                .height(140.dp),
+            contentScale = ContentScale.Fit
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -73,10 +86,6 @@ fun HomeScreen(
         Text(
             text = "⭐ 総XP $totalXp"
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("━━━━━━━━━━━━━━━━━━━━━━")
 
         Spacer(modifier = Modifier.height(16.dp))
 
