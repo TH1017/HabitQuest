@@ -37,6 +37,10 @@ fun HabitDetailScreen(
         mutableStateOf(0)
     }
 
+    var xp by remember {
+        mutableStateOf(0)
+    }
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -44,6 +48,12 @@ fun HabitDetailScreen(
             habitDao.getRecordsByHabit(habitId)
         }
         streakCount = calculateStreak(records)
+
+        val habit = withContext(Dispatchers.IO) {
+            habitDao.getHabitById(habitId)
+        }
+
+        xp = habit?.xp ?: 0
     }
 
 
@@ -78,6 +88,10 @@ fun HabitDetailScreen(
             modifier = Modifier.height(16.dp)
         )
 
+        Text(
+            text = "⭐ XP $xp"
+        )
+
         Button(
             onClick = {
 
@@ -103,12 +117,25 @@ fun HabitDetailScreen(
                             )
                         }
 
+                        withContext(Dispatchers.IO) {
+                            habitDao.addXp(
+                                habitId = habitId,
+                                amount = 10
+                            )
+                        }
+
                         records = withContext(Dispatchers.IO) {
                             habitDao.getRecordsByHabit(habitId)
                         }
                         streakCount = calculateStreak(records)
 
                         completedToday = true
+
+                        val updatedHabit = withContext(Dispatchers.IO) {
+                            habitDao.getHabitById(habitId)
+                        }
+
+                        xp = updatedHabit?.xp ?: 0
                     }
                 }
 

@@ -38,4 +38,23 @@ interface HabitDao {
 
     @Query("DELETE FROM HabitRecord WHERE habitId = :habitId")
     suspend fun deleteRecordsByHabit(habitId: Int)
+
+    @Query("""
+    UPDATE Habit
+    SET xp = xp + :amount
+    WHERE id = :habitId
+""")
+    suspend fun addXp(
+        habitId: Int,
+        amount: Int
+    )
+
+    @Query("""
+    SELECT * FROM Habit
+    WHERE id = :habitId
+    LIMIT 1
+""")
+    suspend fun getHabitById(
+        habitId: Int
+    ): Habit?
 }
