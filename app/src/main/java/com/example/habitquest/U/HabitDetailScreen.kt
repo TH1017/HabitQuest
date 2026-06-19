@@ -44,6 +44,10 @@ fun HabitDetailScreen(
         mutableStateOf(1)
     }
 
+    var badges by remember {
+        mutableStateOf<List<String>>(emptyList())
+    }
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -58,6 +62,11 @@ fun HabitDetailScreen(
 
         xp = habit?.xp ?: 0
         level = calculateLevel(xp)
+        badges = calculateBadges(
+            records,
+            streakCount,
+            level
+        )
     }
 
 
@@ -99,6 +108,16 @@ fun HabitDetailScreen(
         Text(
             text = "⭐ XP $xp"
         )
+
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Text("🏆 獲得バッジ")
+
+        badges.forEach { badge ->
+            Text(badge)
+        }
 
         Button(
             onClick = {
@@ -145,6 +164,11 @@ fun HabitDetailScreen(
 
                         xp = updatedHabit?.xp ?: 0
                         level = calculateLevel(xp)
+                        badges = calculateBadges(
+                            records,
+                            streakCount,
+                            level
+                        )
                     }
                 }
 
@@ -206,4 +230,27 @@ fun calculateLevel(xp: Int): Int {
         xp >= 50 -> 2
         else -> 1
     }
+}
+
+fun calculateBadges(
+    records: List<HabitRecord>,
+    streakCount: Int,
+    level: Int
+): List<String> {
+
+    val result = mutableListOf<String>()
+
+    if (records.isNotEmpty()) {
+        result.add("🏅 初達成")
+    }
+
+    if (streakCount >= 7) {
+        result.add("🏅 7日継続")
+    }
+
+    if (level >= 5) {
+        result.add("🏅 Lv.5達成")
+    }
+
+    return result
 }
