@@ -40,6 +40,9 @@ fun HabitDetailScreen(
     var xp by remember {
         mutableStateOf(0)
     }
+    var level by remember {
+        mutableStateOf(1)
+    }
 
     val scope = rememberCoroutineScope()
 
@@ -54,6 +57,7 @@ fun HabitDetailScreen(
         }
 
         xp = habit?.xp ?: 0
+        level = calculateLevel(xp)
     }
 
 
@@ -86,6 +90,10 @@ fun HabitDetailScreen(
 
         Spacer(
             modifier = Modifier.height(16.dp)
+        )
+
+        Text(
+            text = "⭐ Lv.$level"
         )
 
         Text(
@@ -136,6 +144,7 @@ fun HabitDetailScreen(
                         }
 
                         xp = updatedHabit?.xp ?: 0
+                        level = calculateLevel(xp)
                     }
                 }
 
@@ -186,4 +195,15 @@ fun calculateStreak(records: List<HabitRecord>): Int {
     }
 
     return streak
+}
+
+fun calculateLevel(xp: Int): Int {
+
+    return when {
+        xp >= 500 -> 5
+        xp >= 300 -> 4
+        xp >= 150 -> 3
+        xp >= 50 -> 2
+        else -> 1
+    }
 }
