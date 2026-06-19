@@ -221,16 +221,7 @@ fun calculateStreak(records: List<HabitRecord>): Int {
     return streak
 }
 
-fun calculateLevel(xp: Int): Int {
 
-    return when {
-        xp >= 500 -> 5
-        xp >= 300 -> 4
-        xp >= 150 -> 3
-        xp >= 50 -> 2
-        else -> 1
-    }
-}
 
 fun calculateBadges(
     records: List<HabitRecord>,

@@ -27,6 +27,14 @@ fun HomeScreen(
         mutableStateOf("")
     }
 
+    var totalXp by remember {
+        mutableStateOf(0)
+    }
+
+    var title by remember {
+        mutableStateOf("👶 習慣初心者")
+    }
+
     val habits = remember {
         mutableStateListOf<Habit>()
     }
@@ -43,6 +51,9 @@ fun HomeScreen(
 
         habits.addAll(savedHabits)
 
+        totalXp = savedHabits.sumOf { it.xp }
+
+        title = calculateTitle(totalXp)
     }
 
     Column(
@@ -50,8 +61,22 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
+        Text(" ")
         Text("HabitQuest")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = title
+        )
+
+        Text(
+            text = "⭐ 総XP $totalXp"
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("━━━━━━━━━━━━━━━━━━━━━━")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -101,15 +126,25 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    Text(
-                        text = habit.name,
+                    Column(
                         modifier = Modifier
                             .clickable {
                                 navController.navigate(
                                     "detail/${habit.id}"
                                 )
                             }
-                    )
+                    ) {
+
+                        Text(habit.name)
+
+                        Text(
+                            "Lv.${calculateLevel(habit.xp)}"
+                        )
+
+                        Text(
+                            "XP ${habit.xp}"
+                        )
+                    }
 
                     Button(
                         onClick = {
@@ -134,5 +169,28 @@ fun HomeScreen(
                 }
             }
         }
+    }
+}
+fun calculateTitle(totalXp: Int): String {
+
+    return when {
+        totalXp >= 3000 -> "------伝説の習慣王------"
+        totalXp >= 1500 -> "------習慣王------"
+        totalXp >= 700 -> "------継続マスター------"
+        totalXp >= 300 -> "------習慣戦士------"
+        totalXp >= 100 -> "------見習い冒険者------"
+        else -> "------ 習慣初心者------"
+    }
+}
+
+
+fun calculateLevel(xp: Int): Int {
+
+    return when {
+        xp >= 500 -> 5
+        xp >= 300 -> 4
+        xp >= 150 -> 3
+        xp >= 50 -> 2
+        else -> 1
     }
 }
