@@ -1,3 +1,5 @@
+<img width="300" height="150" alt="habitquest_logo" src="https://github.com/user-attachments/assets/6af1f7fc-e7ea-47d7-b3d4-c6ee252d4806" />
+
 # HabitQuest
 
 HabitQuestは、習慣化をゲーム感覚で楽しめるAndroidアプリです。
