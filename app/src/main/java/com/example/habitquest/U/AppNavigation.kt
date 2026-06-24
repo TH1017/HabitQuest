@@ -13,8 +13,15 @@ fun AppNavigation(habitDao: HabitDao) {
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "welcome"
     ) {
+
+        composable("welcome") {
+
+            WelcomeScreen(
+                navController = navController
+            )
+        }
 
         composable("home") {
 
